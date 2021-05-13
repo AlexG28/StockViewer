@@ -3,32 +3,43 @@
 
 
 async function displayDefaults(){
-
-    const tableBody = document.getElementById('defaultTable');
+    let tickers = "";
+    let tableBody = document.getElementById('defaultTable');
+    let paragraphBody = document.getElementById("div1");
     let dataHtml = ``;
-    const data = {"StockCategory" : "tech"};
     
-    let listOfStocks = await fetch ('http://localhost:3000/getQuoteRoute/kdjf',
-        {
-            //method: 'GET',
-            body: JSON.stringify(data)
-        }
-    );
+    var listOfStocks = await fetch ('http://localhost:3000/getQuoteRoute/tech',{
+        //method: 'GET'
+        //body: JSON.stringify(data)
+    });
 
     const list = await listOfStocks.json();
-
-    for (i = 0; i < list.Stocks.length; i++){
+    console.log(list);
+    for (i = 0; i < list[0].Stocks.length; i++){
+        tickers += list[0].Stocks[i] + " ";
         dataHtml += `
         <thread>
             <tr>
-                <th>${list.Stocks[i]}</th>
+                <th>${list[0].Stocks[i]}</th>
             </tr>
         </thread>   
         `;
+       
     }
-
+    let tickers1 = `
+        <p> 
+            ${tickers}
+        </p>
+    
+    `;
+    paragraphBody.innerHTML = tickers1;
     tableBody.innerHTML = dataHtml;
 }
+/*
+document.ready(function () {
+    displayDefaults();
+});
 
+*/
 
 displayDefaults();
