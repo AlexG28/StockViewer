@@ -4,21 +4,35 @@
 
 async function displayDefaults(){
     const tableBody = document.getElementById('defaultTable');
-    let dataHtml = ``;
+    let dataHtml = `
     
-    var listOfStocks = await fetch ('http://localhost:3000/getQuoteRoute/tech',{
-        //method: 'GET'
-    });
+    <tr>
+        <th>Tech</th>
+        <th>Ticker</th>
+        <th>Price</th>
+        <th>Change</th>
+        <th>% Change</th>
+    </tr>
+    
+    `;
+    
+    var category = await fetch ('http://localhost:3000/getQuoteRoute/Banks', {});
 
-    const list = await listOfStocks.json();
-    console.log(list);
-    for (i = 0; i < list[0].Stocks.length; i++){     
+    const stockList1 = await category.json();
+    const stockList = stockList1[0];
+    console.log(stockList);
+    for (i = 0; i < stockList.Stocks.length; i++){     
+        var dailyPercentChange = ((stockList.Stocks[i].dailyChange / stockList.Stocks[i].price) * 100).toFixed(4);
         dataHtml += `
-        <thread>
-            <tr>
-                <th>${list[0].Stocks[i]}</th>
-            </tr>
-        </thread>   
+       
+        <tr>
+            <th>${stockList.Stocks[i].ticker.toUpperCase()}</th>
+            <th>${stockList.Stocks[i].companyName}</th>
+            <th>${stockList.Stocks[i].price}</th>
+            <th>${stockList.Stocks[i].dailyChange}</th>
+            <th>${dailyPercentChange + " %"}</th>
+        </tr>
+         
         `;
        
     }   
