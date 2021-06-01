@@ -2,21 +2,21 @@
 //using fetch contact with the back end
 
 
-async function displayDefaults(){
+async function displayDefaults(category){
     const tableBody = document.getElementById('defaultTable');
     let dataHtml = `
     
     <tr>
-        <th>Tech</th>
         <th>Ticker</th>
+        <th>Name</th>
         <th>Price</th>
-        <th>Change</th>
+        <th>Daily Change</th>
         <th>% Change</th>
     </tr>
     
     `;
     
-    var category = await fetch ('http://localhost:3000/getQuoteRoute/Banks', {});
+    var category = await fetch ('http://localhost:3000/getQuoteRoute/' + category, {});
 
     const stockList1 = await category.json();
     const stockList = stockList1[0];
@@ -40,4 +40,34 @@ async function displayDefaults(){
     tableBody.innerHTML = dataHtml;
 }
 
-displayDefaults();
+
+function main(){
+    displayDefaults("Tech");
+
+    document.getElementById("Tech").onclick = function(){
+        displayDefaults("Tech");
+    }
+    
+    document.getElementById("Healthcare").onclick = function(){
+        displayDefaults("Healthcare");
+    }
+
+    document.getElementById("Semicondctor").onclick = function(){
+        displayDefaults("Semicondctor");
+    }
+
+    document.getElementById("Automotive").onclick = function(){
+        displayDefaults("Automotive");
+    }
+
+    document.getElementById("Bank").onclick = function(){
+        displayDefaults("Bank");
+    }
+    
+    
+    //displayDefaults("Automotive");
+
+}
+
+main();
+
